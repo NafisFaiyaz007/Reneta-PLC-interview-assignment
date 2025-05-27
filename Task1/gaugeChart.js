@@ -85,16 +85,21 @@ function renderGaugeUI(data) {
   initChart(gaugeData[0].Sales);
 }
 
+// New function to accept JSON array directly
+window.renderGaugeFromJson = function(jsonData) {
+  const mapped = (jsonData || []).map(row => ({
+    Month: row.Month || row["Month"] || row[Object.keys(row)[0]],
+    Sales: Number(row.Sales || row["Sales"] || row[Object.keys(row)[1]])
+  })).filter(row => row.Month && !isNaN(row.Sales));
+  renderGaugeUI(mapped);
+};
+
 if (excelInputB) {
   excelInputB.addEventListener("change", function (e) {
     const file = e.target.files[0];
     if (!file) return;
     window.parseExcelFileToJson(file, function(jsonData) {
-      const mapped = (jsonData.sheetB || []).map(row => ({
-        Month: row.Month || row["Month"] || row[Object.keys(row)[0]],
-        Sales: Number(row.Sales || row["Sales"] || row[Object.keys(row)[1]])
-      })).filter(row => row.Month && !isNaN(row.Sales));
-      renderGaugeUI(mapped);
+      window.renderGaugeFromJson(jsonData.sheetB);
     });
   });
 }

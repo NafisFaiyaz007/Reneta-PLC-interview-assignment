@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Task 1b - Gauge Chart</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 2rem;
+            background-color: #f4f4f4;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .months {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .month-btn {
+            padding: 0.5rem 1rem;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .month-btn:hover {
+            background-color: #f0f0f0;
+        }
+        .month-btn.active {
+            background-color: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+        .gauge-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+        }
+        .status {
+            margin-top: 1rem;
+            text-align: center;
+        }
+        .status-box {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        .low { background-color: #28a745; color: white; }
+        .medium { background-color: #ffc107; color: black; }
+        .high { background-color: #dc3545; color: white; }
+    </style>
+</head>
+<body>
+    <h2>Upload Excel File for TASK 1b</h2>
+    <input type="file" id="excelFileB" accept=".xlsx, .xls">
+    <div class="container">
+        <div class="months" id="month-buttons"></div>
+        <div class="gauge-container">
+            <canvas id="gaugeChart"></canvas>
+            <div class="status">
+                <span>Status:</span> <span id="statusText" class="status-box">-</span>
+            </div>
+        </div>
+    </div>
+    <script src="excelToJson.js"></script>
+    <script src="gaugeChart.js"></script>
+</body>
+</html>

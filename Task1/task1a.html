@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Dynamic Excel to Bar Chart</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 2rem;
+            background-color: #f4f4f4;
+        }
+
+        canvas {
+            max-width: 70%;
+            height: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Upload Excel File for TASK 1a</h2>
+    <input type="file" id="excelFile" accept=".xlsx, .xls">
+<canvas id="barChart"></canvas>
+    <script src="excelToJson.js"></script>
+    <script src="task1a.js"></script>
+
+    
+</body>
+
+</html>
