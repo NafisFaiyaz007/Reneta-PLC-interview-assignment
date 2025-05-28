@@ -41,8 +41,13 @@ function updateChart(value) {
 }
 
 function initChart(value) {
-  const ctx = document.getElementById("gaugeChart").getContext("2d");
-
+  const canvas = document.getElementById("gaugeChart");
+  const ctx = canvas.getContext("2d");
+  
+  // Set canvas dimensions
+  canvas.width = 600;
+  canvas.height = 300;
+  
   chart = new Chart(ctx, {
     type: "doughnut",
     data: {
@@ -59,9 +64,8 @@ function initChart(value) {
       ],
     },
     options: {
-      responsive: true,
-      maintainAspectRatio: true,
-      aspectRatio: 2,
+      responsive: false, // Disable automatic resizing
+      maintainAspectRatio: false,
       plugins: {
         legend: { display: false },
         tooltip: {
@@ -77,21 +81,21 @@ function initChart(value) {
 const excelInputB = document.getElementById("excelFileB");
 let gaugeData = [];
 
-function renderGaugeUI(data) {
-  // Clear previous buttons
-  monthBtnContainer.innerHTML = "";
-  gaugeData = data;
-  createMonthButtons();
-  initChart(gaugeData[0].Sales);
-}
-
 // New function to accept JSON array directly
 window.renderGaugeFromJson = function(jsonData) {
+  console.log('Raw JSON data:', jsonData);
   const mapped = (jsonData || []).map(row => ({
-    Month: row.Month || row["Month"] || row[Object.keys(row)[0]],
-    Sales: Number(row.Sales || row["Sales"] || row[Object.keys(row)[1]])
+    Month: row.Month || row.month || row['Month'] || row[Object.keys(row)[0]],
+    Sales: Number(row.Sales || row.sales || row['Sales'] || row[Object.keys(row)[1]])
   })).filter(row => row.Month && !isNaN(row.Sales));
-  renderGaugeUI(mapped);
+  
+  console.log('Mapped data:', mapped);
+  if (mapped.length === 0) {
+    console.error('No valid data found after mapping');
+    return;
+  }
+  
+  renderGaugeUI(mapped); // Ensure we call renderGaugeUI with the mapped data
 };
 
 if (excelInputB) {
@@ -99,6 +103,10 @@ if (excelInputB) {
     const file = e.target.files[0];
     if (!file) return;
     window.parseExcelFileToJson(file, function(jsonData) {
+      if (!jsonData.sheetB || jsonData.sheetB.length === 0) {
+        alert('No data found in Task 1 (b) sheet');
+        return;
+      }
       window.renderGaugeFromJson(jsonData.sheetB);
     });
   });
@@ -124,5 +132,18 @@ function createMonthButtons() {
 }
 
 window.onload = () => {
-  // No-op for gauge chart until Excel is uploaded
+  // Remove empty chart initialization - we'll initialize when data is available
 };
+
+// Ensure renderGaugeUI properly initializes the chart
+function renderGaugeUI(data) {
+  // Clear previous buttons
+  monthBtnContainer.innerHTML = "";
+  gaugeData = data;
+  createMonthButtons();
+  
+  // Initialize chart with first data point
+  if (gaugeData.length > 0) {
+    initChart(gaugeData[0].Sales);
+  }
+}

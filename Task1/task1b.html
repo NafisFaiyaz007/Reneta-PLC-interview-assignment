@@ -52,14 +52,16 @@
             border-radius: 4px;
             font-weight: bold;
         }
-        .low { background-color: #28a745; color: white; }
+        .low { background-color: blue; color: white; }
         .medium { background-color: #ffc107; color: black; }
         .high { background-color: #dc3545; color: white; }
     </style>
 </head>
 <body>
-    <h2>Upload Excel File for TASK 1b</h2>
-    <input type="file" id="excelFileB" accept=".xlsx, .xls">
+    <!-- <h2>Upload Excel File for TASK 1b</h2>
+    <input type="file" id="excelFileB" accept=".xlsx, .xls"> -->
+    <h2>Gauge Chart Data</h2>
+    <script src="gaugeData.json" type="application/json" id="jsonData"></script>
     <div class="container">
         <div class="months" id="month-buttons"></div>
         <div class="gauge-container">
@@ -69,7 +71,25 @@
             </div>
         </div>
     </div>
-    <script src="excelToJson.js"></script>
     <script src="gaugeChart.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const jsonData = [
+                {"Month": "January", "Sales": 2500000},
+                {"Month": "February", "Sales": 3200000},
+                {"Month": "March", "Sales": 4100000},
+                {"Month": "April", "Sales": 5200000},
+                {"Month": "May", "Sales": 6300000},
+                {"Month": "June", "Sales": 7500000},
+                {"Month": "July", "Sales": 6800000},
+                {"Month": "August", "Sales": 5900000},
+                {"Month": "September", "Sales": 4800000},
+                {"Month": "October", "Sales": 3700000},
+                {"Month": "November", "Sales": 2900000},
+                {"Month": "December", "Sales": 4200000}
+            ];
+            window.renderGaugeFromJson(jsonData);
+        });
+    </script>
 </body>
 </html>
