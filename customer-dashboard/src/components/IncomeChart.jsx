@@ -22,7 +22,7 @@ const IncomeChart = ({ data }) => {
 
   return (
     <div className="bg-white p-4 rounded shadow">
-      <h2 className="text-xl mb-2 font-bold">Average Income by division</h2>
+      <h2 className="text-xl text-black mb-2 font-bold">Average Income by division</h2>
       <ResponsiveContainer width="100%" height={300}>
         <BarChart data={chartData}>
           <XAxis dataKey="division" />

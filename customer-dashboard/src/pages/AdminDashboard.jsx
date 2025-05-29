@@ -1,165 +1,92 @@
 import React, { useState } from "react";
-import customerData from "../data/customers.json";
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  Tooltip,
-  PieChart,
-  Pie,
-  Cell,
-  ResponsiveContainer,
-} from "recharts";
+import customerData from "../assets/customers.json";
 
-const COLORS = [
-  "#8884d8",
-  "#82ca9d",
-  "#ffc658",
-  "#ff8042",
-  "#0088FE",
-  "#00C49F",
-  "#FFBB28",
-  "#FF8042",
-];
+import FilterSelect from "../components/FilterSelect";
+import DataTable from "../components/DataTable";
+import GenderDistribution from "../components/GenderDistribution";
+import IncomeChart from "../components/IncomeChart";
+import MaritalStatusChart from "../components/MaritalStatusChart";
+import ChartContainer from "../components/ChartContainer";
+import AgeDistributionChart from "../components/AgeDistributionChart";
+import AgeGenderIncomeChart from "../components/AgeGenderIncomeChart";
+
 
 const AdminDashboard = () => {
   const [divisionFilter, setDivisionFilter] = useState("All");
   const [genderFilter, setGenderFilter] = useState("All");
 
-  const filteredData = customerData.filter((user) => {
-    return (
+  const filteredData = customerData.filter(
+    (user) =>
       (divisionFilter === "All" || user.division === divisionFilter) &&
       (genderFilter === "All" || user.gender === genderFilter)
-    );
-  });
+  );
 
   const incomeByDivision = filteredData.reduce((acc, curr) => {
     acc[curr.division] = (acc[curr.division] || 0) + curr.income;
     return acc;
   }, {});
+  const incomeData = Object.entries(incomeByDivision).map(
+    ([division, income]) => ({ division, income })
+  );
 
   const genderDistribution = filteredData.reduce((acc, curr) => {
     acc[curr.gender] = (acc[curr.gender] || 0) + 1;
     return acc;
   }, {});
-
-  const incomeData = Object.entries(incomeByDivision).map(
-    ([division, income]) => ({ division, income })
-  );
   const genderData = Object.entries(genderDistribution).map(
     ([gender, value]) => ({ name: gender, value })
   );
 
+  const maritalStatusData = filteredData.map((user) => ({
+    maritalStatus: user.maritalStatus,
+    income: user.income,
+    age: user.age,
+  }));
+
+  // Data for AgeDistributionChart (pass raw filteredData, processing is internal)
+  const ageDistributionData = filteredData;
+
+  // Data for DivisionIncomeChart (uses incomeData which is already {division, income})
+  const divisionIncomeData = incomeData;
+
   const divisions = [...new Set(customerData.map((user) => user.division))];
 
   return (
-    <div className="flex h-screen bg-gray-100">
-      {/* Sidebar */}
-      <div className="w-64 bg-white shadow-md p-4">
-        <h2 className="text-xl font-semibold mb-4">Filters</h2>
-        <div>
-          <label className="block font-medium">Division:</label>
-          <select
-            onChange={(e) => setDivisionFilter(e.target.value)}
-            className="w-full mt-1 p-2 border rounded"
-          >
-            <option value="All">All</option>
-            {divisions.map((div) => (
-              <option key={div} value={div}>
-                {div}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="mt-4">
-          <label className="block font-medium">Gender:</label>
-          <select
-            onChange={(e) => setGenderFilter(e.target.value)}
-            className="w-full mt-1 p-2 border rounded"
-          >
-            <option value="All">All</option>
-            <option value="M">Male</option>
-            <option value="F">Female</option>
-          </select>
-        </div>
-      </div>
+    <div className="min-h-screen bg-opacity-0 text-white px-4 py-6 overflow-auto">
+      <div className="max-w-7xl mx-auto space-y-8">
+        <h1 className="text-3xl font-bold">Admin Dashboard</h1>
 
-      {/* Main Content */}
-      <div className="flex-1 p-6 overflow-auto">
-        <h1 className="text-2xl font-bold mb-6">Admin Dashboard</h1>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Income by Division */}
-          <div className="bg-white p-4 rounded-lg shadow">
-            <h2 className="text-lg font-semibold mb-4">Income by Division</h2>
-            <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={incomeData}>
-                <XAxis dataKey="division" />
-                <YAxis />
-                <Tooltip />
-                <Bar dataKey="income" fill="#8884d8" />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-
-          {/* Gender Distribution */}
-          <div className="bg-white p-4 rounded-lg shadow">
-            <h2 className="text-lg font-semibold mb-4">Gender Distribution</h2>
-            <ResponsiveContainer width="100%" height={300}>
-              <PieChart>
-                <Pie
-                  data={genderData}
-                  dataKey="value"
-                  nameKey="name"
-                  cx="50%"
-                  cy="50%"
-                  outerRadius={100}
-                >
-                  {genderData.map((entry, index) => (
-                    <Cell
-                      key={`cell-${index}`}
-                      fill={COLORS[index % COLORS.length]}
-                    />
-                  ))}
-                </Pie>
-                <Tooltip />
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
+        {/* Filters */}
+        <div className="bg-[#2a2e45] p-4 rounded-lg shadow-md flex flex-wrap gap-y-4">
+          <FilterSelect
+            label="Division"
+            options={["All", ...divisions]}
+            onChange={setDivisionFilter}
+          />
+          <FilterSelect
+            label="Gender"
+            options={["All", "M", "F"]}
+            onChange={setGenderFilter}
+          />
         </div>
 
-        {/* Table of users */}
-        <div className="mt-8 bg-white p-4 rounded-lg shadow">
-          <h2 className="text-lg font-semibold mb-4">Customer List</h2>
-          <div className="overflow-auto max-h-[300px]">
-            <table className="min-w-full border text-sm">
-              <thead>
-                <tr>
-                  <th className="border px-4 py-2">ID</th>
-                  <th className="border px-4 py-2">Name</th>
-                  <th className="border px-4 py-2">Division</th>
-                  <th className="border px-4 py-2">Gender</th>
-                  <th className="border px-4 py-2">Marital Status</th>
-                  <th className="border px-4 py-2">Age</th>
-                  <th className="border px-4 py-2">Income</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredData.map((user) => (
-                  <tr key={user.id}>
-                    <td className="border px-4 py-2">{user.id}</td>
-                    <td className="border px-4 py-2">{user.name}</td>
-                    <td className="border px-4 py-2">{user.division}</td>
-                    <td className="border px-4 py-2">{user.gender}</td>
-                    <td className="border px-4 py-2">{user.maritalStatus}</td>
-                    <td className="border px-4 py-2">{user.age}</td>
-                    <td className="border px-4 py-2">{user.income}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+        {/* Charts */}
+        <div className="grid gap-6 grid-cols-1 md:grid-cols-2 xl:grid-cols-2">
+          <GenderDistribution data={genderData} />
+          <MaritalStatusChart data={maritalStatusData} />
+          <ChartContainer title="Age Group Count">
+            <AgeDistributionChart data={ageDistributionData} />
+          </ChartContainer>
+
+          <ChartContainer title="Avg Income by Age Group & Gender vs income">
+            <AgeGenderIncomeChart data={filteredData} />
+          </ChartContainer>
         </div>
+
+        <IncomeChart data={incomeData} />
+
+        {/* Table */}
+        <DataTable data={filteredData} />
       </div>
     </div>
   );
