@@ -39,8 +39,7 @@ const Login = ({ onLogin }) => {
             required
           >
             <option value="Admin">Admin</option>
-            <option value="Sales">Sales Representative</option>
-            <option value="Other">Other</option>
+            <option value="Customer">Customer</option>
           </select>
         </div>
         <button

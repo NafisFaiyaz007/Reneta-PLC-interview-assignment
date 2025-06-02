@@ -47,7 +47,7 @@ const AdminDashboard = () => {
   const ageDistributionData = filteredData;
 
   // Data for DivisionIncomeChart (uses incomeData which is already {division, income})
-  const divisionIncomeData = incomeData;
+  // const divisionIncomeData = incomeData;
 
   const divisions = [...new Set(customerData.map((user) => user.division))];
 
