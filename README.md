@@ -7,8 +7,8 @@ A React-based dashboard for visualizing customer data, including income, age, ge
 - Interactive charts (bar, pie, scatter, etc.)
 - Filtering by division and gender
 - Responsive, dark-themed UI
--to log in as admin select admin from the dropdown menu and enter a name then login
--to log in as customer select customer from the dropdown menu and enter a name then login
+- to log in as admin select admin from the dropdown menu and enter a name then login
+- to log in as customer select customer from the dropdown menu and enter a name then login
 
 ## Prerequisites
 - [Node.js](https://nodejs.org/) (v14 or higher recommended)
