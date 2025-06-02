@@ -13,7 +13,12 @@ A React-based dashboard for visualizing customer data, including income, age, ge
 - [npm](https://www.npmjs.com/) (comes with Node.js)
 
 ## Getting Started
-
+## For Task 1(a&b)
+ ```bash
+  cd Task1
+   'go live' task1a.html & task1b.html
+   upload the assignment excel file in the file upload section
+   ```
 1. **Install dependencies**
    ```bash
    cd customer-dashboard
@@ -27,11 +32,7 @@ A React-based dashboard for visualizing customer data, including income, age, ge
    ```
    This will launch the app at [http://localhost:3000](http://localhost:3000).
 
-## For Task 1(a&b)
- ```bash
-  cd Task1
-   'go live' task1a.html & task1b.html
-   ```
+
 
 ## Project Structure
 - `src/assets/customers.json` — Customer data source
