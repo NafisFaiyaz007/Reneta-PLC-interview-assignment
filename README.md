@@ -16,11 +16,12 @@ A React-based dashboard for visualizing customer data, including income, age, ge
 
 1. **Install dependencies**
    ```bash
+   cd customer-dashboard
    npm install
    ```
 
-2. **Start the development server**
-   ```bash
+2. **Start the development server for task 2**
+   ```bash 
    cd customer-dashboard
    npm start
    ```
