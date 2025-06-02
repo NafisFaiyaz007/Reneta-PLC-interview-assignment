@@ -29,8 +29,8 @@ A React-based dashboard for visualizing customer data, including income, age, ge
 ## For Task 1(a&b)
  ```bash
   cd Task1
+   'go live' task1a.html & task1b.html
    ```
-   ## 'go live' task1a.html & task1b.html
 
 ## Project Structure
 - `src/assets/customers.json` — Customer data source
